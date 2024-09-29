@@ -1,6 +1,7 @@
 package com.example.movies.presentation.movies
 
 import com.example.movies.domain.models.Movie
+import com.example.movies.ui.movies.models.MoviesState
 
 
 interface MoviesView {
@@ -19,6 +20,8 @@ interface MoviesView {
 
     // Состояние «контента»
     fun showContent(movies: List<Movie>)
+
+    fun render(state: MoviesState)
 
     // Методы «одноразовых событий»
 

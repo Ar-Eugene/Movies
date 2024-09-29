@@ -7,6 +7,7 @@ import com.example.movies.util.Creator
 import com.example.movies.R
 import com.example.movies.domain.api.MoviesInteractor
 import com.example.movies.domain.models.Movie
+import com.example.movies.ui.movies.models.MoviesState
 
 
 class MoviesSearchPresenter (private val view: MoviesView,
@@ -35,7 +36,9 @@ class MoviesSearchPresenter (private val view: MoviesView,
 
     private fun searchRequest(newSearchText: String) {
         if (newSearchText.isNotEmpty()) {
-            view.showLoading()
+            view.render(
+                MoviesState.Loading
+            )
 
             moviesInteractor.searchMovies(newSearchText, object : MoviesInteractor.MoviesConsumer {
                 override fun consume(foundMovies: List<Movie>?, errorMessage: String?) {
@@ -47,16 +50,28 @@ class MoviesSearchPresenter (private val view: MoviesView,
 
                         when {
                             errorMessage != null -> {
-                                view.showError(context.getString(R.string.something_went_wrong))
+                                view.render(
+                                    MoviesState.Error(
+                                        errorMessage = context.getString(R.string.something_went_wrong),
+                                    )
+                                )
                                 view.showToast(errorMessage)
                             }
 
                             movies.isEmpty() -> {
-                                view.showEmpty(context.getString(R.string.nothing_found))
+                                view.render(
+                                    MoviesState.Empty(
+                                        message = context.getString(R.string.nothing_found),
+                                    )
+                                )
                             }
 
                             else -> {
-                                view.showContent(movies)
+                                view.render(
+                                    MoviesState.Content(
+                                        movies = movies,
+                                    )
+                                )
                             }
                         }
 

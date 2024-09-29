@@ -19,6 +19,7 @@ import com.example.movies.ui.poster.PosterActivity
 import com.example.movies.R
 import com.example.movies.domain.models.Movie
 import com.example.movies.presentation.movies.MoviesView
+import com.example.movies.ui.movies.models.MoviesState
 
 
 class MoviesActivity : AppCompatActivity(),MoviesView {
@@ -98,7 +99,6 @@ class MoviesActivity : AppCompatActivity(),MoviesView {
 
         placeholderMessage.text = errorMessage
     }
-
     override fun showEmpty(emptyMessage: String) {
         showError(emptyMessage)
     }
@@ -112,6 +112,16 @@ class MoviesActivity : AppCompatActivity(),MoviesView {
         adapter.movies.addAll(movies)
         adapter.notifyDataSetChanged()
     }
+
+    override fun render(state: MoviesState) {
+        when (state) {
+            is MoviesState.Loading -> showLoading()
+            is MoviesState.Content -> showContent(state.movies)
+            is MoviesState.Error -> showError(state.errorMessage)
+            is MoviesState.Empty -> showEmpty(state.message)
+        }
+    }
+
     override fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
