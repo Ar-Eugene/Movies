@@ -2,17 +2,26 @@ package com.example.movies.presentation.movies
 
 import com.example.movies.domain.models.Movie
 
+
 interface MoviesView {
 
-    fun showPlaceholderMessage(isVisible: Boolean)
 
-    fun showMoviesList(isVisible: Boolean)
+    // Методы, меняющие внешний вид экрана
 
-    fun showProgressBar(isVisible: Boolean)
+    // Состояние «загрузки»
+    fun showLoading()
 
-    fun changePlaceholderText(newPlaceholderText: String)
+    // Состояние «ошибки»
+    fun showError(errorMessage: String)
 
-    fun updateMoviesList(newMoviesList: List<Movie>)
+    // Состояние «пустого списка»
+    fun showEmpty(emptyMessage: String)
 
-    fun showMessage(message: String)
+    // Состояние «контента»
+    fun showContent(movies: List<Movie>)
+
+    // Методы «одноразовых событий»
+
+    fun showToast(additionalMessage: String)
+
 }
